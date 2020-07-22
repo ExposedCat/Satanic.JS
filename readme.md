@@ -1,4 +1,4 @@
-# Gettings started
+# Getting started
 
 Satanic.JS is a Node.JS module, that provides convenient functions, that make coding easier and Telegraf wrapper
 
