@@ -114,7 +114,7 @@ const env = readEnv() // default path is './config.env'
 ```
 or
 ```js
-const env = readEnv('path/to/config.env)
+const env = readEnv('path/to/config.env')
 ```
 ### saveJSON(data, path)
 Write JSON to local file
