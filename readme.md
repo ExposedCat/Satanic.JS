@@ -105,6 +105,17 @@ tools.log('Debug data', true)
 tools.log('Error', false, true)
 tools.log(['Array', 'of', 'data'])
 ```
+### readEnv(path)
+Read .env config
+Returns object
+
+```js
+const env = readEnv() // default path is './config.env'
+```
+or
+```js
+const env = readEnv('path/to/config.env)
+```
 ### saveJSON(data, path)
 Write JSON to local file
 ```js
