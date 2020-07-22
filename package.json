@@ -1,0 +1,27 @@
+{
+  "name": "satanic",
+  "version": "2.0.5",
+  "description": "Some useful utils for JavaScript",
+  "main": "satanic.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ExposedCat/Satanic.JS.git"
+  },
+  "keywords": [
+    "tools",
+    "utils"
+  ],
+  "author": "ExposedCat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ExposedCat/Satanic.JS/issues"
+  },
+  "homepage": "https://github.com/ExposedCat/Satanic.JS#readme",
+  "dependencies": {
+    "node-schedule": "^1.3.2",
+    "telegraf": "^3.38.0"
+  }
+}
