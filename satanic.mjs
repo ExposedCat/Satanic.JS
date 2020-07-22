@@ -1,6 +1,7 @@
 import telegramBot from 'telegraf'
 import fs from 'fs'
 import nc from 'node-schedule'
+import dotenv from 'dotenv'
 
 const timeInMs = {
     millisecond: 1,
@@ -254,6 +255,12 @@ function log(data, silent, error) {
             }
         })
 }
+function readEnv(path = 'config.env') {
+    const envData = dotenv.config({
+        path: path
+    })
+    return envData.parsed
+}
 function getDate(cron) {
     const cronJob = new nc.scheduleJob(cron, () => { })
     const date = new Date(cronJob.nextInvocation())
@@ -361,6 +368,7 @@ export default {
     random: random,
     updateClasses: updateClasses,
     log: log,
+    readEnv: readEnv,
     arrayShuffle: arrayShuffle,
     saveJSON: saveJSON,
     getJSON: getJSON,
