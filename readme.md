@@ -33,7 +33,7 @@ import tools from 'satanic'
 ### Create instance
 ```js
     const path = 'data/file.json'
-    const file = new tools.JSONFile(path)
+    const file = new JSONFile(path)
 ```
 ### toObject()
 Convert file data to object
@@ -174,6 +174,23 @@ tools.repeat(4, i => console.log(i))
 // 2
 // 3
 ```
+### forObject(object, callback)
+Iterate over `object`
+```js
+const animalsSounds = {
+    cat: 'Meow',
+    dog: 'Woof',
+    fish: null,
+    cow: 'Moo'
+}
+forObject(animalsSounds, (animal, sound) => {
+    if (sound === null) {
+        return 'continue'
+    }
+    console.log(`${animal} says ${sound}!`)
+})
+```
+U can return `continue` or `break` from callback function to go to next iteration immediately or stop cycle.
 ### bot(token, errorHandling, start)
 Invokes Telegram bot instance(wrapper for Telegraf)
 More in [Telegraf docks](https://telegraf.js.org)
