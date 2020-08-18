@@ -11,24 +11,6 @@ const timeInMs = {
     day: 1000 * 60 * 60 * 24
 }
 
-function updateClasses(...prototypes) {
-    for (const prototype of prototypes) {
-        const className = (prototype.constructor || {}).name
-        if (typeof className === 'string') {
-            if (eval(`typeof super${className}`) !== 'undefined') {
-                const methods = Object.getOwnPropertyNames(eval(`new super${className}()`).__proto__),
-                    exportingProto = eval(`super${className}.prototype`)
-                for (const method of methods) {
-                    if (!prototype.hasOwnProperty(method)) {
-                        prototype[method] = exportingProto[method]
-                    }
-                }
-            }
-        }
-    }
-}
-updateClasses(String.prototype, Array.prototype, Number.prototype)
-
 class superDate {
     leftTimeTo(date) {
         let timeInMsDelta = new Date(+new Date(date) - +this)
@@ -238,6 +220,24 @@ class Queue {
     }
 }
 
+function updateClasses(...prototypes) {
+    for (const prototype of prototypes) {
+        const className = (prototype.constructor || {}).name
+        if (typeof className === 'string') {
+            if (eval(`typeof super${className}`) !== 'undefined') {
+                const methods = Object.getOwnPropertyNames(eval(`new super${className}()`).__proto__),
+                    exportingProto = eval(`super${className}.prototype`)
+                for (const method of methods) {
+                    if (!prototype.hasOwnProperty(method)) {
+                        prototype[method] = exportingProto[method]
+                    }
+                }
+            }
+        }
+    }
+}
+updateClasses(String.prototype, Array.prototype, Number.prototype)
+
 function log(data, silent, error) {
     if (!silent) {
         if (!error) {
@@ -299,6 +299,15 @@ function repeat(count, callback) {
         }
     }
 }
+function forObject(object, callback) {
+    for (const [key, value] of Object.entries(object)) {
+        const cbResult = callback(key, value)
+        if (cbResult === 'break') {
+            break
+        }
+    }
+}
+
 function randomNumber(min = 0, max = 1, fractionDigits = 0) {
     const precision = Math.pow(10, Math.max(fractionDigits, 0))
     const scaledMax = max * precision
@@ -307,8 +316,8 @@ function randomNumber(min = 0, max = 1, fractionDigits = 0) {
     return num / precision
 }
 function random(min, max, decimal = false) {
-    const minIsNumber = minIsNumber
-    const maxIsNumber = maxIsNumber
+    const minIsNumber = !isNaN(parseFloat(min))
+    const maxIsNumber = !isNaN(parseFloat(max))
     if (minIsNumber) {
         min = +min
     }
@@ -337,12 +346,17 @@ function bot(token, errorHandling, start) {
     if (errorHandling) {
         bot.catch((err) => console.error(err))
     }
-    async function run() {
-        start()
+    bot.start = () => {
+        if (typeof start === 'function') {
+            start()
+        } else {
+            if (start !== undefined) {
+                throw new Error('Start function must be type of function')
+            }
+        }
         bot.launch()
         console.log(`Bot "${token}" started`)
     }
-    bot.start = run || (() => { })
     return bot
 }
 
@@ -363,23 +377,23 @@ async function getJSON(path) {
 }
 
 export default {
-    timeInMs: timeInMs,
+    timeInMs,
 
-    random: random,
-    updateClasses: updateClasses,
-    log: log,
-    readEnv: readEnv,
-    arrayShuffle: arrayShuffle,
-    saveJSON: saveJSON,
-    getJSON: getJSON,
-    getDate: getDate,
-    randomBoolean: randomBoolean,
-    randomWithChance: randomWithChance,
-    doAtDate: doAtDate,
-    sleep: sleep,
-    repeat: repeat,
-    bot: bot,
+    random,
+    updateClasses,
+    log,
+    readEnv,
+    saveJSON,
+    getJSON,
+    getDate,
+    randomBoolean,
+    randomWithChance,
+    doAtDate,
+    sleep,
+    repeat,
+    forObject,
+    bot,
 
-    Queue: Queue,
-    JSONFile: JSONFile
+    Queue,
+    JSONFile
 }
