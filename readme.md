@@ -32,8 +32,8 @@ import tools from 'satanic'
 ```
 ### Create instance
 ```js
-    const path = 'data/file.json'
-    const file = new JSONFile(path)
+const path = 'data/file.json'
+const file = new tools.JSONFile(path)
 ```
 ### toObject()
 Convert file data to object
