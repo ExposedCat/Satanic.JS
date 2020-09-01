@@ -85,7 +85,12 @@ class superArray {
             }
             return this
         }
-        this.splice(this.indexOf(elementToDelete), 1)
+
+        const index = this.indexOf(elementToDelete)
+
+        if (index !== -1) {
+            this.splice(index, 1)
+        }
         return this
     }
     sum() {
@@ -221,7 +226,9 @@ class Queue {
 }
 
 function updateClasses(...prototypes) {
-    for (const prototype of prototypes) {
+    for (let prototype of prototypes) {
+        prototype = prototype.prototype || prototype
+        
         const className = (prototype.constructor || {}).name
         if (typeof className === 'string') {
             if (eval(`typeof super${className}`) !== 'undefined') {
