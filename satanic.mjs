@@ -1,4 +1,5 @@
 import telegramBot from 'telegraf'
+import Markup from 'telegraf/markup.js'
 import fs from 'fs'
 import nc from 'node-schedule'
 import dotenv from 'dotenv'
@@ -279,14 +280,14 @@ function randomBoolean() {
 }
 function randomWithChance(data) {
     const values = Object.keys(data)
-    const chances = Object.value(data)
+    const chances = Object.values(data)
     const pool = []
-    for (let i = 0, pool = []; i < chances.length; i++) {
+    for (let i = 0; i < chances.length; i++) {
         for (let j = 0; j < chances[i]; j++) {
             pool.push(i)
         }
     }
-    return values[pool.shuffle()['0']]
+    return values[pool.shuffle()[0]]
 }
 function doAtDate(date, cb) {
     return new nc.scheduleJob(date, async () => {
@@ -348,22 +349,23 @@ function random(min, max, decimal = false) {
     }
     return new Error(`Error: At least one of required arguments must be type of number, got ${typeof min} and ${typeof max}`)
 }
-function bot(token, errorHandling, start) {
+function bot(token, errorHandling, start, options = {}) {
     const bot = new telegramBot(token)
     if (errorHandling) {
-        bot.catch((err) => console.error(err))
+        bot.catch(err => console.error)
     }
-    bot.start = () => {
+    const runner = () => {
         if (typeof start === 'function') {
             start()
         } else {
-            if (start !== undefined) {
+            if (start !== undefined && start !== null) {
                 throw new Error('Start function must be type of function')
             }
         }
         bot.launch()
         console.log(`Bot "${token}" started`)
     }
+    bot[options.newRunner ? 'run' : 'start'] = runner
     return bot
 }
 
@@ -400,7 +402,7 @@ export default {
     repeat,
     forObject,
     bot,
-
+    Markup,
     Queue,
     JSONFile
 }
